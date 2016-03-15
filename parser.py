@@ -63,18 +63,21 @@ def crawl():
     output = codecs.open("posts.txt","w","utf-8-sig")
     glue = "?page="
     root = "http://forum.jogos.uol.com.br/vale-tudo_f_57"
-    for g in range(1,5):
+
+    for g in range(1,8):
       print("===========",g,"==============")
+      print(len(dataz))
       bagofThreads = []
       lastpage = g * 100
       if(g != 1): fpage = fpage + 100
       else: fpage = 1
+
       for p in range(fpage,lastpage):
         tr = myThread(root+glue+str(p))
         bagofThreads.append(tr)
       for t in bagofThreads:
             t.start()
-      while(bagofThreads[len(bagofThreads)-1].isAlive()):
+      while(max([bg.isAlive() for bg in bagofThreads])):
             pass
       for t in bagofThreads:
             t.join()
@@ -108,7 +111,7 @@ def extractPage(vtp):
           tries = tries + 1
           print("try number: ", tries)
       except:
-          tries=7
+          tries=11
     try:
         for topic in topics.contents[3].contents[1].contents[5].contents:
             if(len(topic) > 2):
@@ -238,7 +241,7 @@ def timePeriod(path):
             i = i.split("\t")
             date = i[1].split(" ")
             if((len(date) == 2)):
-               if(date[1] != "xx:xx"):
+               if((date[1] != "xx:xx") & (date[0][6:] == "2016")):
                    users[i[0]] = hasuser(users,i[0]) + " " + date[1]
 
     for u in users:
@@ -273,7 +276,5 @@ def timePeriod(path):
 
 
 #vtCrawler("http://forum.jogos.uol.com.br/vale-tudo_f_57")
-#timePeriod("posts1000.txt")
+timePeriod("posts1000.txt")
 #crawl()
-
-
