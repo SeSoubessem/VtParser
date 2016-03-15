@@ -64,22 +64,20 @@ def crawl():
     glue = "?page="
     root = "http://forum.jogos.uol.com.br/vale-tudo_f_57"
     for g in range(1,5):
+      print("===========",g,"==============")
       bagofThreads = []
-      tiea = g * 100
-      if(g != 1): v = v + 100
-      else: v = 1
-
-      for p in range(v,tiea):
+      lastpage = g * 100
+      if(g != 1): fpage = fpage + 100
+      else: fpage = 1
+      for p in range(fpage,lastpage):
         tr = myThread(root+glue+str(p))
         bagofThreads.append(tr)
-
       for t in bagofThreads:
-        t.start()
-
-      time.sleep(500)
-
+            t.start()
+      while(bagofThreads[len(bagofThreads)-1].isAlive()):
+            pass
       for t in bagofThreads:
-        t.join()
+            t.join()
 
     for topic in dataz:
         if(topic is not None):
@@ -275,7 +273,7 @@ def timePeriod(path):
 
 
 #vtCrawler("http://forum.jogos.uol.com.br/vale-tudo_f_57")
-#timePeriod("posts2.txt")
-crawl()
+#timePeriod("posts1000.txt")
+#crawl()
 
 
